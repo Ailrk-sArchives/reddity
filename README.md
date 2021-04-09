@@ -1,1 +1,3 @@
-# Yet another boring reddit for web programming course.
+# Reddity
+
+Yet another reddit copy (not really)
