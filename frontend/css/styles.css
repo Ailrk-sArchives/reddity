@@ -1,0 +1,124 @@
+body {
+  background: #e9f2f6;
+  font-family: sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+.header {
+  display: flex;
+  background: #42c8f5 ;
+  display: fixed;
+  border-bottom: 4px solid #34a0c4;
+}
+
+header {
+  margin-right: 32px;
+  margin-left: 32px;
+}
+
+header h1 {
+  margin: 6px;
+  color: white;
+}
+
+nav {
+  flex-grow: 1;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+nav a {
+  margin-right: 8px;
+  text-decoration: none;
+  color: white;
+}
+
+.content-scroll {
+  overflow-y: auto;
+}
+
+.content-container {
+  max-width: 768px;
+  margin: 0 auto;
+  padding-top: 12px;
+}
+
+.content {
+  display: flex;
+  min-height: 100px;
+  padding-bottom: 24px;
+}
+
+.posts {
+  flex-grow: 1;
+  background: white;
+  border-radius: 8px;
+}
+
+.sidebar {
+  padding: 12px;
+  background: white;
+  margin-left: 12px;
+  border-radius: 8px;
+}
+
+.post-card {
+  padding: 12px;
+  margin-bottom: 4px;
+  display: flex;
+}
+
+.post-card .score {
+  margin-right: 12px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.post-card .score span {
+  padding-top: 4px;
+}
+
+.post-card .info span, .info a {
+  color: #787e7c;
+  text-decoration: none;
+}
+
+.info a:hover {
+  text-decoration: underline;
+}
+
+.post-card .info .post-title {
+  font-size: 1.5em;
+  display: flex;
+  flex-direction: column;
+}
+
+.info {
+  width: 100%;
+}
+
+.info .post-title {
+  width: 100%;
+}
+
+.info .post-title a {
+  color: black;
+  width: 100%;
+}
+
+.info .post-title a:hover {
+  color: #34a0c4;
+  text-decoration: none;
+}
+
+.arrow-icon {
+  padding: 4px;
+  color: #888c8e;
+}
+
+.arrow-icon:hover {
+  cursor: pointer;
+}

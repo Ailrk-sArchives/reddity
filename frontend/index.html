@@ -2,9 +2,44 @@
 <html>
   <head>
     <title>Reddity</title>
+    <link rel="stylesheet" href="css/styles.css">
   </head>
+  <script
+    src="https://code.jquery.com/jquery-3.6.0.min.js"
+    integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
+    crossorigin="anonymous"></script>
+  <script src="js/config.js"></script>
+  <script src="js/index.js"></script>
 
   <body>
-    <h1>Reddity</h1>
+    <div class="container">
+      <div class="header">
+        <header>
+          <h1>Reddity</h1>
+        </header>
+        <nav>
+          <span class="sorting-options">
+            <a class="selected" id="sort-popular" href="./index.html?s=popular">popular</a>
+            <a class="" id="sort-new" href="./index.html?s=new">new</a>
+          </span>
+          <span class="profile-links">
+            <a id="login-profile" href="./login.html">login</a>
+            <a id="signup-submit" href="./signup.html">signup</a>
+          </span>
+        </nav>
+      </div>
+
+      <div class="content-scroll">
+        <div class="content-container">
+          <div class="content">
+            <div class="posts" id="postlist">
+            </div>
+            <div class="sidebar">
+              <input type="text" placeholder="search">
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   </body>
 </html>
