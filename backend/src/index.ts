@@ -100,7 +100,7 @@ app.route('/popular')
     try {
       const db = await connection;
       const posts_ = await db.all<PostDB[]>(`
-        select * from post order by score
+        select * from post order by score desc
       `);
       const posts = await Promise.all(posts_.map(toPost));
       res.status(200).json(posts);
