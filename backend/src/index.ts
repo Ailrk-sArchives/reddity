@@ -118,18 +118,19 @@ app.route('/posts')
     try {
       const db = await connection;
       const p = req.body as Omit<Post, 'post_id' | 'replies'>;
-      p.created_at = new Date().toUTCString();
+      p.created_at = new Date().toJSON();
       p.score = 0;
       const author = await db.get<User>(`
         select * from user where name = ?
         `, p.author);
 
       await db.run(`
-        insert into post (author_id,
-                          title,
-                          content,
-                          created_at,
-                          score)
+        insert into post ( author_id
+                         , title
+                         , content
+                         , created_at
+                         , score
+                         )
                values(?, ?, ?, ?, ?)
       `,
         author?.user_id as number,
@@ -138,7 +139,6 @@ app.route('/posts')
         p.created_at,
         p.score
       )
-      console.log(`${JSON.stringify(req.body)}`);
       res.status(200).json({
         msg: "ok",
         info: "pushed new post"
@@ -152,18 +152,97 @@ app.route('/posts')
     }
   });
 
-///! put new post
-app.route('/posts/:id/:parent_id')
-  .put((req, res) => {
-    const params = req.params as {
+app.route('/posts/:id/')
+  .put(async (req, res) => {
+    const {id} = req.params as {
       id: string,
-      parent_id: string
     };
 
-    const id = Number.parseInt(params.id);
-    const parent_id = Number.parseInt(params.parent_id);
+    const r = req.body as Omit<Reply, | 'reply_id' | 'replies'>;
+    try {
+      const db = await connection;
+      const author = await db.get<User>(`
+        select * from user where name = ?
+        `, r.author);
 
-    res.send(`PUT place holder ${JSON.stringify(params)}`);
+      r.created_at = new Date().toJSON();
+      r.score = 0;
+
+      await db.run(`
+        insert into reply ( author_id
+                          , post_id
+                          , body
+                          , score
+                          , created_at
+                          )
+                values(?, ?, ?, ?, ?)
+        `,
+        author?.user_id as number,
+        id,
+        r.body,
+        r.score,
+        r.created_at);
+
+      res.status(200).json({
+        msg: "ok",
+        info: "pushed new top level reply"
+      });
+    } catch (e) {
+      res.status(400).json({
+        msg: "error",
+        info: `${e}`
+      })
+    }
+  });
+
+///! put new post
+app.route('/posts/:id/:parent_id')
+  .put(async (req, res) => {
+    {
+      const {id, parent_id} = req.params as {
+        id: string,
+        parent_id: string,
+      };
+
+      const r = req.body as Omit<Reply, 'reply_id' | 'replies'>;
+      try {
+        const db = await connection;
+        const author = await db.get<User>(`
+        select * from user where name = ?
+        `, r.author);
+
+        r.created_at = new Date().toJSON();
+        r.score = 0;
+
+        await db.run(`
+          insert into reply ( author_id
+                            , post_id
+                            , root_reply_id
+                            , body
+                            , score
+                            , created_at
+                            )
+                  values(?, ?, ?, ?, ?, ?)
+          `,
+          author?.user_id as number,
+          id,
+          parent_id,
+          r.body,
+          r.score,
+          r.created_at);
+
+        res.status(200).json({
+          msg: "ok",
+          info: "pushed new top level reply"
+        });
+      } catch (e) {
+        res.status(400).json({
+          msg: "error",
+          info: `${e}`
+        })
+      }
+    }
+
   });
 
 ///! req.body: User

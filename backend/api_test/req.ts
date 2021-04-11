@@ -43,6 +43,8 @@ const fetch = (options: http.RequestOptions & {body?: string}, end: (buf: Buffer
   req.end();
 };
 
+/* test start */
+
 // fetch({
 //   path: "/login/test", method: "POST", body: JSON.stringify({
 //     user_id: 1,
@@ -85,8 +87,6 @@ fetch({
     author: "test",
     title: "title tite",
     content: "content content",
-    created_at: "2021-04-11T13:08:24.185Z",
-    score: 20
 
   })
 }, buf => {
@@ -96,21 +96,30 @@ fetch({
 })
 
 
-// fetch({path: "/posts/1", method: "POST"}, buf => {
-//   const result = buf.toString('utf8');
-//   console.log(result);
-//   // assert(result === "TESTING", "assert failed");
-// })
+fetch({
+  path: "/posts/2", method: "PUT", body: JSON.stringify({
+    author_id: 2,
+    post_id: 2,
+    body: "body reply"
+  })
+}, buf => {
+  const result = buf.toString('utf8');
+  console.log(result);
+  // assert(result === "TESTING", "assert failed");
+})
 
 
-// fetch({path: "/POST/1", method: "PUT"}, buf => {
-//   const result = buf.toString('utf8');
-//   console.log(result);
-//   // assert(result === "TESTING", "assert failed");
-// })
+fetch({
+  path: "/posts/2/1", method: "PUT", body: JSON.stringify({
+    author_id: 2,
+    post_id: 2,
+    body: "body reply"
+  })
+}, buf => {
+  const result = buf.toString('utf8');
+  console.log(result);
+  // assert(result === "TESTING", "assert failed");
+})
 
-// fetch({path: "POST/1/1", method: "PUT"}, buf => {
-//   const result = buf.toString('utf8');
-//   console.log(result);
-//   // assert(result === "TESTING", "assert failed");
-// })
+
+

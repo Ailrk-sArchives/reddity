@@ -5,6 +5,7 @@ import fs from 'fs';
 
 sqlite3.verbose()
 
+/// types for interfacing.
 
 export interface TableName {
   name: string
@@ -41,6 +42,8 @@ export type APITypes =
   | Reply
   ;
 
+
+///! types map the database.
 
 export interface UserDB {
   user_id: number,

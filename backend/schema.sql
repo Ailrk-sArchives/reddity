@@ -47,12 +47,12 @@ insert into post (author_id, title, content, created_at, score)
   values (1, "title1", "content1", DateTime('now'), 20);
 
 
-insert into reply (author_id, post_id, body, score)
-  values (1, 1, "reply1", 100);
-insert into reply (author_id, root_reply_id, post_id, body, score)
-  values (1, 1, 1, "reply1-1", 88);
-insert into reply (author_id, root_reply_id, post_id, body, score)
-  values (2, 1, 1, "reply1-2", 70);
+insert into reply (author_id, post_id, body, score, created_at)
+  values (1, 1, "reply1", 100, DateTime('now'));
+insert into reply (author_id, root_reply_id, post_id, body, score, created_at)
+  values (1, 1, 1, "reply1-1", 88, DateTime('now'));
+insert into reply (author_id, root_reply_id, post_id, body, score, created_at)
+  values (2, 1, 1, "reply1-2", 70, DateTime('now'));
 
-insert into reply (author_id, post_id, body, score)
-  values (1, 2, "reply2", 10);
+insert into reply (author_id, post_id, body, score, created_at)
+  values (1, 2, "reply2", 10, DateTime('now'));
