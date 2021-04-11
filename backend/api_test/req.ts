@@ -79,9 +79,17 @@ const fetch = (options: http.RequestOptions & {body?: string}, end: (buf: Buffer
 //   // assert(result === "TESTING", "assert failed");
 // })
 
-fetch({path: "/posts", method: "PUT", body: JSON.stringify({
+fetch({
+  path: "/posts", method: "PUT", body: JSON.stringify({
 
-})}, buf => {
+    author: "test",
+    title: "title tite",
+    content: "content content",
+    created_at: "2021-04-11T13:08:24.185Z",
+    score: 20
+
+  })
+}, buf => {
   const result = buf.toString('utf8');
   console.log(result);
   // assert(result === "TESTING", "assert failed");

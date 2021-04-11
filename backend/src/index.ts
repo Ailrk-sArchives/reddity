@@ -23,8 +23,9 @@ app.route('/login/:name')
   .post(async (req, res) => {
     const db = await connection;
     const u = (req.body as User);
-    const u_ = await db.get<User>(
-      "select name, password from user where user_id = ?", u.user_id);
+    const u_ = await db.get<User>(`
+      select name, password from user where user_id = ?
+    `, u.user_id);
     if (u_ && u_.password == u.password) {
       // TODO
       console.log("yes");
@@ -37,7 +38,9 @@ app.route('/popular')
   .get(async (_, res) => {
     try {
       const db = await connection;
-      const posts_ = await db.all<PostDB[]>("select * from post order by score");
+      const posts_ = await db.all<PostDB[]>(`
+        select * from post order by score
+      `);
       const posts = await Promise.all(posts_.map(toPost));
       res.status(200).json(posts);
 
@@ -55,7 +58,9 @@ app.route('/new')
   .get(async (_, res) => {
     try {
       const db = await connection;
-      const posts_ = await db.all<PostDB[]>("select * from post order by created_at");
+      const posts_ = await db.all<PostDB[]>(`
+        select * from post order by created_at
+      `);
       const posts = await Promise.all(posts_.map(toPost));
       res.status(200).json(posts);
 
@@ -92,7 +97,9 @@ app.route('/posts/:id')
 
     try {
       const db = await connection;
-      const post_ = await db.get<PostDB>("select * from post where post_id = ?", id);
+      const post_ = await db.get<PostDB>(`
+        select * from post where post_id = ?
+     `, id);
       const post = toPost(post_ as PostDB);
       res.status(200).json(post);
     } catch (e) {
@@ -110,7 +117,32 @@ app.route('/posts')
 
     try {
       const db = await connection;
+      const p = req.body as Omit<Post, 'post_id' | 'replies'>;
+      p.created_at = new Date().toUTCString();
+      p.score = 0;
+      const author = await db.get<User>(`
+        select * from user where name = ?
+        `, p.author);
+
+      await db.run(`
+        insert into post (author_id,
+                          title,
+                          content,
+                          created_at,
+                          score)
+               values(?, ?, ?, ?, ?)
+      `,
+        author?.user_id as number,
+        p.title,
+        p.content,
+        p.created_at,
+        p.score
+      )
       console.log(`${JSON.stringify(req.body)}`);
+      res.status(200).json({
+        msg: "ok",
+        info: "pushed new post"
+      });
 
     } catch (e) {
       res.status(400).json({
@@ -123,7 +155,14 @@ app.route('/posts')
 ///! put new post
 app.route('/posts/:id/:parent_id')
   .put((req, res) => {
-    const params = req.params;
+    const params = req.params as {
+      id: string,
+      parent_id: string
+    };
+
+    const id = Number.parseInt(params.id);
+    const parent_id = Number.parseInt(params.parent_id);
+
     res.send(`PUT place holder ${JSON.stringify(params)}`);
   });
 
