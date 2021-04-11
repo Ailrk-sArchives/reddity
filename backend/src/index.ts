@@ -36,7 +36,7 @@ app.route('/signup')
       if (avatar) {
         await db.run(`
           insert into user (name, password, email, avatar)
-                  values (?, ?, ?)
+                  values (?, ?, ?, ?)
           `,
           name,
           password,
@@ -45,8 +45,8 @@ app.route('/signup')
         );
       } else {
         await db.run(`
-          insert into user (name, password, email )
-                  values (?, ?)
+          insert into user (name, password, email)
+                  values (?, ?, ?)
           `,
           name,
           password,
