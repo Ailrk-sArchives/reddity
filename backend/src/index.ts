@@ -3,10 +3,12 @@ import {testRouter} from "./test";
 import {loggerMW, requestTimeMW} from "./middlewares";
 import {connection, User, Post, Reply, PostDB, toPost} from "./model";
 
+const cors = require("cors");
 const app = express()
 const PORT = 8080
 
 
+app.use(cors());
 app.use(requestTimeMW);
 app.use(loggerMW);
 app.use(express.json());
@@ -159,7 +161,7 @@ app.route('/posts/:id')
       const post_ = await db.get<PostDB>(`
         select * from post where post_id = ?
      `, id);
-      const post = toPost(post_ as PostDB);
+      const post = await toPost(post_ as PostDB);
       res.status(200).json(post);
     } catch (e) {
       res.status(400).json({
