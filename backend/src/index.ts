@@ -294,7 +294,7 @@ app.route('/posts/:id/:parent_id')
 
         res.status(200).json({
           msg: "ok",
-          detail: "pushed new top level reply"
+          detail: "pushed new nested reply"
         });
       } catch (e) {
         res.status(400).json({

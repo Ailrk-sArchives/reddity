@@ -122,3 +122,58 @@ nav a {
 .arrow-icon:hover {
   cursor: pointer;
 }
+
+/* /posts */
+.post-container {
+  flex-grow: 1;
+  background: white;
+  border-radius: 8px;
+  padding: 12px;
+}
+
+.reply {
+  margin-left: 12px;
+  border-left: 4px solid #e2e2e6;
+  padding: 8px 16px;
+}
+
+.byline {
+  color: #787e7c;
+}
+
+.byline a {
+  color: #787e7c;
+  text-decoration: none;
+}
+
+.byline a:hover {
+  text-decoration: underline;
+}
+
+.byline {
+  font-size: 0.8em;
+}
+
+.reply .actions button {
+  margin-bottom: 12px;
+  background: none;
+  border: none;
+  font-weight: bold;
+  color: #787e7c;
+}
+
+.reply-box {
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+}
+
+.reply-box textarea {
+  resize: none;
+  min-height: 6em;
+}
+
+.reply-box button {
+  flex-shrink: 1;
+  margin-top: 4px;
+}
