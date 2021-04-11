@@ -53,5 +53,3 @@ insert into reply (root_reply_id, post_id, body, score)
 
 insert into reply (post_id, body, score)
   values (2, "reply2", 100);
-
-
