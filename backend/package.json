@@ -23,6 +23,7 @@
     "sqlite3": "^5.0.2"
   },
   "nodemonConfig": {
-    "delay": 2500
+    "delay": 2500,
+    "ignore": ["api_test/*"]
   }
 }

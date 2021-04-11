@@ -19,6 +19,7 @@
   "exclude": [
     "node_modules",
     "types",
+    "api_test",
     "__tests__/**/*"
   ]
 }

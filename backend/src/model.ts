@@ -41,7 +41,7 @@ const DBPATH = "db.sqlite";
 sqlite3.verbose();
 
 ///! connect to the database
-export const connect = async () => {
+export const connection = (async () => {
   const db = await sqlite.open({
     filename: DBPATH,
     driver: sqlite3.Database
@@ -64,4 +64,4 @@ export const connect = async () => {
   });
 
   return db;
-};
+})();
