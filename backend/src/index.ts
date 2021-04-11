@@ -159,7 +159,7 @@ app.route('/posts/:id')
       const post_ = await db.get<PostDB>(`
         select * from post where post_id = ?
      `, id);
-      const post = toPost(post_ as PostDB);
+      const post = await toPost(post_ as PostDB);
       res.status(200).json(post);
     } catch (e) {
       res.status(400).json({
