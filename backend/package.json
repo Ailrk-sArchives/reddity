@@ -18,6 +18,7 @@
   },
   "dependencies": {
     "@types/sqlite3": "^3.1.7",
+    "cors": "^2.8.5",
     "express": "^4.17.1",
     "sqlite": "^4.0.21",
     "sqlite3": "^5.0.2"

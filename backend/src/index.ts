@@ -3,10 +3,12 @@ import {testRouter} from "./test";
 import {loggerMW, requestTimeMW} from "./middlewares";
 import {connection, User, Post, Reply, PostDB, toPost} from "./model";
 
+const cors = require("cors");
 const app = express()
 const PORT = 8080
 
 
+app.use(cors());
 app.use(requestTimeMW);
 app.use(loggerMW);
 app.use(express.json());
