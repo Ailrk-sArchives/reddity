@@ -14,7 +14,9 @@ export interface TableName {
 export interface User {
   user_id: number,
   name: string,
-  password: number,
+  password: string,
+  email?: string,
+  avatar?: string,  // base 64 encode the buffer.
 };
 
 export interface Post {
@@ -48,7 +50,9 @@ export type APITypes =
 export interface UserDB {
   user_id: number,
   name: string,
-  password: number,
+  password: string,
+  email?: string,
+  avatar?: Buffer,
 };
 
 
@@ -84,22 +88,13 @@ export const fromUser = async (u: User): Promise<UserDB> => u as UserDB;
 
 export const toPost = async (p: PostDB): Promise<Post> => {
   const db = await connection;
-  console.log("I'm in post");
-
   const author = await db.get<{name: string}>(
     "select name from user where user_id = ?",
     p.author_id);
-
-  console.log(`${JSON.stringify(author)}`);
-
   const replies_ = await db.all<ReplyDB[]>(
     "select * from reply where post_id = ?",
     p.post_id);
-  console.log(`${JSON.stringify(replies_)}`);
-
   const replies = await Promise.all(replies_.map(toReply));
-
-  console.log(JSON.stringify(replies));
 
   return <Post>{
     ...p,
@@ -110,7 +105,6 @@ export const toPost = async (p: PostDB): Promise<Post> => {
 
 
 export const toReply = async (r: ReplyDB): Promise<Reply> => {
-  console.log("I'm in reply");
   const db = await connection;
   const author = (await db.get<{name: string}>(
     "select name from user where user_id = ?",
@@ -158,4 +152,3 @@ export const connection = (async () => {
 
   return db;
 })();
-

@@ -5,7 +5,9 @@ drop table if exists reply;
 create table if not exists user (
   user_id integer not null ,
   name varchar(50) not null unique,
-  password integer not null,
+  password text not null,
+  email text,
+  avatar blob,
   primary key (user_id)
 );
 

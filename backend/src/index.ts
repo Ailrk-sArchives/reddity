@@ -1,7 +1,7 @@
 import express from "express";
 import {testRouter} from "./test";
 import {loggerMW, requestTimeMW} from "./middlewares";
-import {connection, APITypes, User, Post, Reply, TableName, DBType, UserDB, PostDB, ReplyDB, toPost, toUser, toReply} from "./model";
+import {connection, User, Post, Reply, PostDB, toPost} from "./model";
 
 const app = express()
 const PORT = 8080
@@ -18,19 +18,78 @@ app.route('/')
     res.send("TESTING")
   });
 
+///! signup new users
+app.route('/signup')
+  .post(async (req, res) => {
+    const {name, password, email, avatar} = req.body as {
+      name: string,
+      password: string  // hash from the client side
+      email?: string
+      avatar?: string
+    };
+
+    try {
+      const db = await connection;
+
+      if (avatar) {
+        await db.run(`
+          insert into user (name, password, email, avatar)
+                  values (?, ?, ?)
+          `,
+          name,
+          password,
+          email,
+          Buffer.from(avatar, "base64")
+        );
+      } else {
+        await db.run(`
+          insert into user (name, password, email )
+                  values (?, ?)
+          `,
+          name,
+          password,
+          email
+        );
+      }
+
+      res.status(200).json({
+        msg: "ok",
+        detail: "signed up"
+      });
+
+    } catch (e) {
+      res.status(400).json({
+        msg: "error",
+        detail: `${e}`
+      })
+    }
+  });
+
+
 ///! login
 app.route('/login/:name')
   .post(async (req, res) => {
-    const db = await connection;
-    const u = (req.body as User);
-    const u_ = await db.get<User>(`
+    try {
+      const db = await connection;
+      const u = (req.body as User);
+      const u_ = await db.get<User>(`
       select name, password from user where user_id = ?
     `, u.user_id);
-    if (u_ && u_.password == u.password) {
-      // TODO
-      console.log("yes");
+      if (u_ && u_.password == u.password) {
+        res.status(200).json(req.body);
+      } else {
+        res.status(400).json({
+          msg: "we are expecting somethig different",
+          detail: "wrong password"
+        });
+      }
+
+    } catch (e) {
+      res.status(400).json({
+        msg: "error",
+        detail: `${e}`
+      })
     }
-    res.send(req.body);
   })
 
 ///! List of posts sorted by popularities
@@ -47,7 +106,7 @@ app.route('/popular')
     } catch (e) {
       res.status(400).json({
         msg: "error",
-        info: `${e}`
+        detail: `${e}`
       })
     }
 
@@ -67,7 +126,7 @@ app.route('/new')
     } catch (e) {
       res.status(400).json({
         msg: "error",
-        info: `${e}`
+        detail: `${e}`
       })
     }
   });
@@ -83,7 +142,7 @@ app.route('/posts')
     } catch (e) {
       res.status(400).json({
         msg: "error",
-        info: `${e}`
+        detail: `${e}`
       })
     }
   });
@@ -105,7 +164,7 @@ app.route('/posts/:id')
     } catch (e) {
       res.status(400).json({
         msg: "error",
-        info: `${e}`
+        detail: `${e}`
       })
     }
   })
@@ -141,13 +200,13 @@ app.route('/posts')
       )
       res.status(200).json({
         msg: "ok",
-        info: "pushed new post"
+        detail: "pushed new post"
       });
 
     } catch (e) {
       res.status(400).json({
         msg: "error",
-        info: `${e}`
+        detail: `${e}`
       })
     }
   });
@@ -185,12 +244,12 @@ app.route('/posts/:id/')
 
       res.status(200).json({
         msg: "ok",
-        info: "pushed new top level reply"
+        detail: "pushed new top level reply"
       });
     } catch (e) {
       res.status(400).json({
         msg: "error",
-        info: `${e}`
+        detail: `${e}`
       })
     }
   });
@@ -233,17 +292,18 @@ app.route('/posts/:id/:parent_id')
 
         res.status(200).json({
           msg: "ok",
-          info: "pushed new top level reply"
+          detail: "pushed new top level reply"
         });
       } catch (e) {
         res.status(400).json({
           msg: "error",
-          info: `${e}`
+          detail: `${e}`
         })
       }
     }
 
   });
+
 
 ///! req.body: User
 app.route('/users')

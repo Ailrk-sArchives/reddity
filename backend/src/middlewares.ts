@@ -21,6 +21,7 @@ export const loggerMW: RequestHandler = (req, _, next) => {
   next();
 };
 
+
 export const isTimedRequest = (req: Request): req is {requestTime: Date} & Request => {
   return (req as {[key: string]: any}).requestTime !== undefined;
 };

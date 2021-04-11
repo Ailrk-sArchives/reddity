@@ -45,41 +45,41 @@ const fetch = (options: http.RequestOptions & {body?: string}, end: (buf: Buffer
 
 /* test start */
 
-// fetch({
-//   path: "/login/test", method: "POST", body: JSON.stringify({
-//     user_id: 1,
-//     name: "test",
-//     password: 123
-//   })
-// }, buf => {
-//   const result = buf.toString('utf8');
-//   console.log(result);
-//   // assert(result === "TESTING", "assert failed");
-// });
+fetch({
+  path: "/login/test", method: "POST", body: JSON.stringify({
+    user_id: 1,
+    name: "test",
+    password: 123
+  })
+}, buf => {
+  const result = buf.toString('utf8');
+  console.log(result);
+  // assert(result === "TESTING", "assert failed");
+});
 
-// fetch({path: "/", method: "GET"}, buf => {
-//   const result = buf.toString('utf8');
-//   console.log(result);
-//   assert(result === "TESTING", "assert failed");
-// });
+fetch({path: "/", method: "GET"}, buf => {
+  const result = buf.toString('utf8');
+  console.log(result);
+  assert(result === "TESTING", "assert failed");
+});
 
-// fetch({path: "/popular", method: "GET"}, buf => {
-//   const result = buf.toString('utf8');
-//   console.log(result);
-//   // assert(result === "TESTING", "assert failed");
-// })
+fetch({path: "/popular", method: "GET"}, buf => {
+  const result = buf.toString('utf8');
+  console.log(result);
+  // assert(result === "TESTING", "assert failed");
+})
 
-// fetch({path: "/new", method: "GET"}, buf => {
-//   const result = buf.toString('utf8');
-//   console.log(result);
-//   // assert(result === "TESTING", "assert failed");
-// })
+fetch({path: "/new", method: "GET"}, buf => {
+  const result = buf.toString('utf8');
+  console.log(result);
+  // assert(result === "TESTING", "assert failed");
+})
 
-// fetch({path: "/posts", method: "GET"}, buf => {
-//   const result = buf.toString('utf8');
-//   console.log(result);
-//   // assert(result === "TESTING", "assert failed");
-// })
+fetch({path: "/posts", method: "GET"}, buf => {
+  const result = buf.toString('utf8');
+  console.log(result);
+  // assert(result === "TESTING", "assert failed");
+})
 
 fetch({
   path: "/posts", method: "PUT", body: JSON.stringify({
@@ -98,7 +98,7 @@ fetch({
 
 fetch({
   path: "/posts/2", method: "PUT", body: JSON.stringify({
-    author_id: 2,
+    author: "test1",
     post_id: 2,
     body: "body reply"
   })
@@ -111,7 +111,7 @@ fetch({
 
 fetch({
   path: "/posts/2/1", method: "PUT", body: JSON.stringify({
-    author_id: 2,
+    author: "test1",
     post_id: 2,
     body: "body reply"
   })
@@ -120,6 +120,3 @@ fetch({
   console.log(result);
   // assert(result === "TESTING", "assert failed");
 })
-
-
-
