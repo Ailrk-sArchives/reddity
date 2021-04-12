@@ -10,7 +10,3 @@
 cd api_test
 ts-node req.ts
 ```
-
-### What's not done
-
-login and session.
