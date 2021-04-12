@@ -172,6 +172,34 @@ app.route('/posts/:id')
     }
   })
 
+app.route('/posts/:id/score')
+  .put(async (req, res) => {
+    const params = req.params;
+    const id: number = Number.parseInt(params.id);
+
+    try {
+      const db = await connection;
+      const {score} = req.body as {score: number};
+
+      if (score > 0) {
+        await db.run(`
+          update post set score = score + 1 where post_id = ?
+        `, id)
+      } else if (score < 0) {
+        await db.run(`
+          update post set score = score - 1 where post_id = ?
+        `, id)
+      }
+      res.status(200).json({ msg: "ok" });
+    } catch (e) {
+      res.status(400).json({
+        msg: "error",
+        detail: `${e}`
+      })
+    }
+
+  });
+
 
 ///! upload new post.
 app.route('/posts')
