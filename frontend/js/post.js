@@ -1,3 +1,6 @@
+let collapsed = {};
+let postCache = {};
+
 function loadPost(id) {
   fetch(`${SERVER_URL}/posts/${id}`)
     .then(res => res.json())
@@ -26,7 +29,7 @@ function renderReplies(replyParent, replies) {
   for (const reply of replies) {
     const child = makeReply(reply);
     replyParent.append(child);
-    if (reply.replies) {
+    if (reply.replies && !collapsed[reply.reply_id]) {
       renderReplies(child, reply.replies)
     }
   }
@@ -34,6 +37,8 @@ function renderReplies(replyParent, replies) {
 
 function renderPost(post) {
   console.log(post);
+  postCache = post;
+
   $("#post-header").empty();
   $("#comment-submit").empty();
   $("#replies").empty();
@@ -86,9 +91,9 @@ function makeReply(reply) {
       <p class="reply-body">${reply.body}</p>
     </div>
   `);
+  const span = $(`<span class="actions"></span>`);
 
   if (USER) {
-    const span = $(`<span class="actions"></span>`);
     const btn = $(`<button id="btn_${reply.reply_id}">Reply</button>`);
 
     btn.on("click", () => {
@@ -97,8 +102,19 @@ function makeReply(reply) {
     });
 
     span.append(btn);
-    result.append(span);
   }
+
+  if (reply.replies && reply.replies.length > 0) {
+    const val = collapsed[reply.reply_id] ? true : false;
+    const text = !val ? "Collapse" : "Uncollapse";
+    const collapseBtn = $(`<button id="col_${reply.reply_id}">${text}</button>`);
+    collapseBtn.on("click", () => {
+      collapsed[reply.reply_id] = !val;
+      renderPost(postCache);
+    });
+    span.append(collapseBtn);
+  }
+  result.append(span);
 
   return result;
 }
