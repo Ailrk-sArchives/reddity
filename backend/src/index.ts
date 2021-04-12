@@ -120,7 +120,7 @@ app.route('/new')
     try {
       const db = await connection;
       const posts_ = await db.all<PostDB[]>(`
-        select * from post order by created_at
+        select * from post order by created_at desc
       `);
       const posts = await Promise.all(posts_.map(toPost));
       res.status(200).json(posts);
