@@ -28,12 +28,12 @@ function updateScore(postId, score, renderPosts) {
     } else if (score > 0){
       votes[postId] = true;
     }
-    localStorage.setItem("reddity.votes", JSON.stringify(votes));
+    localStorage.setItem(`reddity.votes.${USER.name}`, JSON.stringify(votes));
   });
 }
 
 function makePost(post) {
-  const votes = JSON.parse(localStorage.getItem("reddity.votes"));
+  const votes = USER ? JSON.parse(localStorage.getItem(`reddity.votes.${USER.name}`)) : null;
   const voted = votes && votes[post.post_id] ? "voted" : "";
 
   const arrow = $(`<a class="arrow-icon ${voted}">\u2764</a>`);
@@ -50,7 +50,8 @@ function makePost(post) {
   `);
 
   arrow.on("click", () => {
-    const votes = JSON.parse(localStorage.getItem("reddity.votes"));
+    if (!USER) return;
+    const votes = JSON.parse(localStorage.getItem(`reddity.votes.${USER.name}`));
     if (votes && votes[post.post_id]) {
       updateScore(post.post_id, -1, renderAllPosts);
       return;
