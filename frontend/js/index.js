@@ -36,6 +36,15 @@ function renderAllPosts(posts) {
   });
 }
 
+function makePostHistory(history) {
+  history.forEach((post, i) => {
+    console.log(post);
+    $("#post-history").append(`
+      <p>${i+1}. <a href="./post.html?p=${post.post_id}">${post.title}</a></p>`
+    );
+  })
+}
+
 $(document).ready(() => {
   const url = new URL(window.location.href);
   const s = url.searchParams.get("s");
@@ -44,4 +53,11 @@ $(document).ready(() => {
 
   $("#search").on("input", () => renderAllPosts(postsCache));
   $("#submit-search").on("click", () => renderAllPosts(postsCache));
+
+  const history = JSON.parse(localStorage.getItem("reddity.history"));
+  if (!history || history.length === 0) {
+    $("#post-history").append(`<p class="dim">viewed posts will appear here</p>`);
+    return;
+  }
+  makePostHistory(history);
 });

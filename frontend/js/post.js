@@ -46,9 +46,26 @@ function renderPost(post) {
 
   const replies = post.replies.filter(r => r.root_reply_id === null);
   renderReplies($("#replies"), replies);
+
+  if (post.title) {
+    let history = JSON.parse(localStorage.getItem("reddity.history"));
+    if (!history) {
+      history = [];
+    }
+
+    history = history.filter(p => p.post_id !== post.post_id);
+    history.unshift({ post_id: post.post_id, title: post.title });
+    if (history.length > 3) {
+      history.pop();
+    }
+    localStorage.setItem("reddity.history", JSON.stringify(history));
+  }
 }
 
 function makePostHeader(post) {
+  if (!post.title) {
+    return $(`<h1>404 could not find post</h1>`);
+  }
   return $(`
     <div>
       <h1>${post.title}</h1>
@@ -78,7 +95,6 @@ function makeReply(reply) {
       $("#nested-box").remove();
       (makeReplyBox(reply.post_id, reply.reply_id)).insertAfter(btn);
     });
-
 
     span.append(btn);
     result.append(span);
@@ -115,7 +131,7 @@ $(document).ready(() => {
   const p = url.searchParams.get("p");
 
   if (!p) {
-    // error goto 404
+    $("#post-header").append("<h1>404 could not find post</h1>");
     return;
   }
   loadPost(p);
