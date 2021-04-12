@@ -35,21 +35,22 @@ app.route('/signup')
 
       if (avatar) {
         await db.run(`
-          insert into user (name, password)
-                  values (?, ?)
+          insert into user (name, password, email, avatar)
+                  values (?, ?, ?, ?)
           `,
           name,
           password,
-          //email,
-          //Buffer.from(avatar, "base64")
+          email,
+          Buffer.from(avatar, "base64")
         );
       } else {
         await db.run(`
-          insert into user (name, password)
-                  values (?, ?)
+          insert into user (name, password, email)
+                  values (?, ?, ?)
           `,
           name,
-          password
+          password,
+          email
         );
       }
 
