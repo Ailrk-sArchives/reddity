@@ -190,7 +190,7 @@ app.route('/posts/:id/score')
           update post set score = score - 1 where post_id = ?
         `, id)
       }
-      res.status(200).json({ msg: "ok" });
+      res.status(200).json({msg: "ok"});
     } catch (e) {
       res.status(400).json({
         msg: "error",

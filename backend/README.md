@@ -7,6 +7,7 @@
 ### How to test
 
 ```
+npm install -g ts-node # if you want
 cd api_test
 ts-node req.ts
 ```
