@@ -28,7 +28,7 @@
    ```
    cd frontend
    npm install -g httpd-server
-   http-server -p 80
+   npm start
    ```
    Then open `http://localhost`
 
