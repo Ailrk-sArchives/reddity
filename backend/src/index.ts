@@ -35,22 +35,21 @@ app.route('/signup')
 
       if (avatar) {
         await db.run(`
-          insert into user (name, password, email, avatar)
-                  values (?, ?, ?, ?)
+          insert into user (name, password)
+                  values (?, ?)
           `,
           name,
           password,
-          email,
-          Buffer.from(avatar, "base64")
+          //email,
+          //Buffer.from(avatar, "base64")
         );
       } else {
         await db.run(`
-          insert into user (name, password, email)
-                  values (?, ?, ?)
+          insert into user (name, password)
+                  values (?, ?)
           `,
           name,
-          password,
-          email
+          password
         );
       }
 
@@ -75,8 +74,9 @@ app.route('/login/:name')
       const db = await connection;
       const u = (req.body as User);
       const u_ = await db.get<User>(`
-      select name, password from user where user_id = ?
-    `, u.user_id);
+      select name, password from user where name = ?
+    `, req.params.name);
+
       if (u_ && u_.password == u.password) {
         res.status(200).json(req.body);
       } else {

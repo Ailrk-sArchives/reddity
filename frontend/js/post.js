@@ -39,7 +39,10 @@ function renderPost(post) {
   $("#replies").empty();
 
   $("#post-header").append(makePostHeader(post));
-  $("#comment-submit").append(makeReplyBox(post.post_id, null))
+
+  if (USER) {
+    $("#comment-submit").append(makeReplyBox(post.post_id, null))
+  }
 
   const replies = post.replies.filter(r => r.root_reply_id === null);
   renderReplies($("#replies"), replies);
@@ -67,16 +70,19 @@ function makeReply(reply) {
     </div>
   `);
 
-  const span = $(`<span class="actions"></span>`);
-  const btn = $(`<button id="btn_${reply.reply_id}">Reply</button>`);
+  if (USER) {
+    const span = $(`<span class="actions"></span>`);
+    const btn = $(`<button id="btn_${reply.reply_id}">Reply</button>`);
 
-  btn.on("click", () => {
-    $("#nested-box").remove();
-    (makeReplyBox(reply.post_id, reply.reply_id)).insertAfter(btn);
-  });
+    btn.on("click", () => {
+      $("#nested-box").remove();
+      (makeReplyBox(reply.post_id, reply.reply_id)).insertAfter(btn);
+    });
 
-  span.append(btn);
-  result.append(span);
+
+    span.append(btn);
+    result.append(span);
+  }
 
   return result;
 }
@@ -95,9 +101,11 @@ function makeReplyBox(postId, parentId) {
   box.append(span);
 
   btn.on("click", () => {
-    const body = area.val();
-    console.log(body);
-    submitReply(body, 'test', postId, parentId)
+    if (USER) {
+      const body = area.val();
+      console.log(body);
+      submitReply(body, USER.name, postId, parentId)
+    }
   })
   return box;
 }

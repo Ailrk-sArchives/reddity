@@ -9,7 +9,7 @@
     integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
     crossorigin="anonymous"></script>
   <script src="js/config.js"></script>
-  <script src="js/index.js"></script>
+  <script src="js/login.js"></script>
 
   <body>
     <div class="container">
@@ -32,10 +32,14 @@
       <div class="content-scroll">
         <div class="content-container">
           <div class="content">
-            <div class="posts" id="postlist">
-            </div>
-            <div class="sidebar">
-              <input type="text" placeholder="search">
+            <div class="form" id="login-form">
+              <h3>Login</h3>
+              <p id="error"></p>
+              <div class="items">
+                <div>Username <input type="text" id="username"></div>
+                <div>Password <input type="password" id="password"></div>
+              </div>
+              <button id="submit-button">Submit</button>
             </div>
           </div>
         </div>
