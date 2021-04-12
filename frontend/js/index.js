@@ -47,7 +47,7 @@ function makePostHistory(history) {
 
 $(document).ready(() => {
   const url = new URL(window.location.href);
-  const s = url.searchParams.get("s");
+  const s = url.searchParams.get("s").toLowerCase();
   const filter = s === "new" ? "new" : "popular";
   loadPosts(filter, renderAllPosts);
 

@@ -13,6 +13,7 @@
 
    ```
    cd backend
+   npm install -g typescript
    npm install
    ```
 
@@ -22,16 +23,12 @@
    npm start
    ```
 
-4. 
-
-   Option A: Open index.html (located in reddity/frontend/index.html) in a browser
-
-   Option B:
-   In another terminal window:
+4. Open another terminal window to start the front end
 
    ```
-   npm install -g http-server
    cd frontend
+   npm install -g httpd-server
    http-server -p 80
    ```
    Then open `http://localhost`
+

@@ -64,6 +64,7 @@ function renderPost(post) {
       history.pop();
     }
     localStorage.setItem("reddity.history", JSON.stringify(history));
+    document.title = `${post.title} - Reddity`;
   }
 }
 

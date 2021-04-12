@@ -48,6 +48,7 @@ $(document).ready(() => {
   $(".sidebar").append(`<p id="score"></p`);
 
   loadPosts("new", (posts) => renderUserPosts(posts, u));
+  document.title = `${u} - Reddity`;
 
   if (USER && USER.name === u) {
     $(".sidebar").append(makeUserEditForm());
