@@ -10,6 +10,9 @@ body {
   background: #42c8f5 ;
   display: fixed;
   border-bottom: 4px solid #34a0c4;
+  position: fixed;
+  width: 100%;
+  height: 52px;
 }
 
 header {
@@ -39,6 +42,10 @@ nav a {
   color: white;
 }
 
+nav a:hover {
+  text-decoration: underline;
+}
+
 .content-scroll {
   overflow-y: auto;
 }
@@ -47,6 +54,7 @@ nav a {
   max-width: 768px;
   margin: 0 auto;
   padding-top: 12px;
+  margin-top: 52px;
 }
 
 .content {
@@ -200,4 +208,13 @@ nav a {
 
 #error {
   color: #ef3550;
+}
+
+footer {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  font-size: 0.8em;
+  color: #787e7c;
+  padding-bottom: 12px;
 }

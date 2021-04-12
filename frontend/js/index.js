@@ -1,14 +1,33 @@
 let postsCache;
 
+function makeEmptyPost() {
+  return $(`
+    <div style="padding:12px">
+      <p class="empty-post-message">No posts to show!</p>
+      <p><a href="./submit.html">Create a new post</a></p>
+    </div>
+  `)
+}
+
 function renderAllPosts(posts) {
   console.log(posts);
   postsCache = posts;
   $("#postlist").empty();
 
+  if (!posts) {
+    $("#postlist").append(makeEmptyPost());
+    return;
+  }
+
   const search = $("#search").val();
   if (search) {
     posts = posts.filter(
       p => p.title.toLowerCase().includes(search.toLowerCase()));
+  }
+
+  if (posts.length === 0) {
+    $("#postlist").append(makeEmptyPost());
+    return;
   }
 
   posts.forEach(post => {
