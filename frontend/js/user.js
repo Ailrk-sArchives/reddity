@@ -47,7 +47,7 @@ $(document).ready(() => {
   const u = url.searchParams.get("u");
   $(".sidebar").append(`<h3>${u}</h3>`);
   $(".sidebar").append(`<p id="score"></p>`);
-  $(".sidebar").append(`<img src="${USER.avatar}" width="80%"></img>`);
+  $(".sidebar").append(`<img src="${USER.avatar}" width="200"></img>`);
 
   loadPosts("new", (posts) => renderUserPosts(posts, u));
   document.title = `${u} - Reddity`;
