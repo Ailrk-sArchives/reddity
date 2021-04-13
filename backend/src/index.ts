@@ -48,16 +48,10 @@ app.route('/signup')
           Buffer.from(avatar)
         );
       } else {
-        await db.run(`
-          insert into
-          user
-          (name, password, email)
-          values (?, ?, ?)
-          `,
-          name,
-          password,
-          email
-        );
+        res.status(400).json({
+          msg: "error",
+          detail: `You must have an avatar`
+        })
       }
 
       res.status(200).json({

@@ -3,7 +3,7 @@ import {RequestHandler, Request} from "express";
 
 ///! add time stamp
 export const requestTimeMW: RequestHandler = (req, _, next) => {
-  (req as {requestTime: Date} & Request).requestTime = new Date();
+  (req as {requestTime: Date} & Request).requestTime = new Date()
   next();
 };
 
