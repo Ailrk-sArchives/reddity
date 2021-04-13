@@ -40,7 +40,7 @@ function makePostHistory(history) {
   history.forEach((post, i) => {
     console.log(post);
     $("#post-history").append(`
-      <p>${i+1}. <a href="./post.html?p=${post.post_id}">${post.title}</a></p>`
+      <p>${i+1}. <a class="post-history-entry" href="./post.html?p=${post.post_id}">${post.title}</a></p>`
     );
   })
 }
