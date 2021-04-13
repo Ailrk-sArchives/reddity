@@ -15,7 +15,7 @@ function createUser() {
   const email = $("#email").val();
   const avatar = document.getElementById("avatar-select").files[0];
 
-  const user = {username, password, email};
+  const user = {username, password, email, avatar};
   console.log(user);
 
   if (!validateUser(user)) {
@@ -64,6 +64,11 @@ function validateUser(user) {
     $("#error").text("Password cannot be empty");
     return false;
   }
+  if (!user.avatar) {
+    $("#error").text("Must have an avatar");
+    return false;
+  }
+
   return true;
 }
 
