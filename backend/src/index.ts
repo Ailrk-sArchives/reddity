@@ -1,7 +1,7 @@
 import express from "express";
 import {testRouter} from "./test";
 import {loggerMW, requestTimeMW} from "./middlewares";
-import {connection, User, Post, Reply, PostDB, toPost} from "./model";
+import {connection, User, Post, Reply, PostDB, UserDB, toPost} from "./model";
 
 const cors = require("cors");
 const app = express()
@@ -11,7 +11,7 @@ const PORT = 8080
 app.use(cors());
 app.use(requestTimeMW);
 app.use(loggerMW);
-app.use(express.json());
+app.use(express.json({limit: 1024 * 1024 * 1024}));
 
 
 ///! index
@@ -32,21 +32,27 @@ app.route('/signup')
 
     try {
       const db = await connection;
+      console.log(avatar);
 
       if (avatar) {
+        console.log(avatar);
         await db.run(`
-          insert into user (name, password, email, avatar)
-                  values (?, ?, ?, ?)
+          insert into
+          user
+          (name, password, email, avatar)
+          values (?, ?, ?, ?)
           `,
           name,
           password,
           email,
-          Buffer.from(avatar, "base64")
+          Buffer.from(avatar)
         );
       } else {
         await db.run(`
-          insert into user (name, password, email)
-                  values (?, ?, ?)
+          insert into
+          user
+          (name, password, email)
+          values (?, ?, ?)
           `,
           name,
           password,
@@ -60,9 +66,10 @@ app.route('/signup')
       });
 
     } catch (e) {
+      console.error(e);
       res.status(400).json({
         msg: "error",
-        detail: `${e}`
+        detail: `Your information doesn't seem to be in correct format`
       })
     }
   });
@@ -74,12 +81,19 @@ app.route('/login/:name')
     try {
       const db = await connection;
       const u = (req.body as User);
-      const u_ = await db.get<User>(`
-      select name, password from user where name = ?
+      const u_ = await db.get<UserDB>(`
+      select name, password, email, avatar
+      from user
+      where name = ?
     `, req.params.name);
 
       if (u_ && u_.password == u.password) {
-        res.status(200).json(req.body);
+        const avatar = u_.avatar?.toString();
+        res.status(200).json({
+          ...u_,
+          avatar,
+        } as User)
+
       } else {
         res.status(400).json({
           msg: "we are expecting somethig different",
@@ -88,9 +102,10 @@ app.route('/login/:name')
       }
 
     } catch (e) {
+      console.error(e);
       res.status(400).json({
         msg: "error",
-        detail: `${e}`
+        detail: `login failed`
       })
     }
   })
@@ -101,15 +116,18 @@ app.route('/popular')
     try {
       const db = await connection;
       const posts_ = await db.all<PostDB[]>(`
-        select * from post order by score desc
+        select *
+        from post
+        order by score desc
       `);
       const posts = await Promise.all(posts_.map(toPost));
       res.status(200).json(posts);
 
     } catch (e) {
+      console.error(e);
       res.status(400).json({
         msg: "error",
-        detail: `${e}`
+        detail: `fetch popular failed`
       })
     }
 
@@ -121,15 +139,18 @@ app.route('/new')
     try {
       const db = await connection;
       const posts_ = await db.all<PostDB[]>(`
-        select * from post order by created_at desc
+        select * from
+        post order by
+        created_at desc
       `);
       const posts = await Promise.all(posts_.map(toPost));
       res.status(200).json(posts);
 
     } catch (e) {
+      console.error(e);
       res.status(400).json({
         msg: "error",
-        detail: `${e}`
+        detail: `fetch newest failed`
       })
     }
   });
@@ -143,9 +164,10 @@ app.route('/posts')
       const posts = await Promise.all(posts_.map(toPost));
       res.status(200).json(posts);
     } catch (e) {
+      console.error(e);
       res.status(400).json({
         msg: "error",
-        detail: `${e}`
+        detail: `fetch posts failed`
       })
     }
   });
@@ -160,14 +182,17 @@ app.route('/posts/:id')
     try {
       const db = await connection;
       const post_ = await db.get<PostDB>(`
-        select * from post where post_id = ?
+        select *
+        from post
+        where post_id = ?
      `, id);
       const post = await toPost(post_ as PostDB);
       res.status(200).json(post);
     } catch (e) {
+      console.error(e);
       res.status(400).json({
         msg: "error",
-        detail: `${e}`
+        detail: `get post failed`
       })
     }
   })
@@ -183,18 +208,23 @@ app.route('/posts/:id/score')
 
       if (score > 0) {
         await db.run(`
-          update post set score = score + 1 where post_id = ?
+          update post
+          set score = score + 1
+          where post_id = ?
         `, id)
       } else if (score < 0) {
         await db.run(`
-          update post set score = score - 1 where post_id = ?
+          update post
+          set score = score - 1
+          where post_id = ?
         `, id)
       }
       res.status(200).json({msg: "ok"});
     } catch (e) {
+      console.error(e);
       res.status(400).json({
         msg: "error",
-        detail: `${e}`
+        detail: `update score failed`
       })
     }
 
@@ -211,17 +241,21 @@ app.route('/posts')
       p.created_at = new Date().toJSON();
       p.score = 0;
       const author = await db.get<User>(`
-        select * from user where name = ?
+        select *
+        from user
+        where name = ?
         `, p.author);
 
       await db.run(`
-        insert into post ( author_id
-                         , title
-                         , content
-                         , created_at
-                         , score
-                         )
-               values(?, ?, ?, ?, ?)
+        insert into
+        post
+        ( author_id
+        , title
+        , content
+        , created_at
+        , score
+        )
+        values(?, ?, ?, ?, ?)
       `,
         author?.user_id as number,
         p.title,
@@ -235,9 +269,10 @@ app.route('/posts')
       });
 
     } catch (e) {
+      console.error(e);
       res.status(400).json({
         msg: "error",
-        detail: `${e}`
+        detail: `push post failed`
       })
     }
   });
@@ -259,13 +294,15 @@ app.route('/posts/:id/')
       r.score = 0;
 
       await db.run(`
-        insert into reply ( author_id
-                          , post_id
-                          , body
-                          , score
-                          , created_at
-                          )
-                values(?, ?, ?, ?, ?)
+        insert into
+        reply
+        ( author_id
+        , post_id
+        , body
+        , score
+        , created_at
+        )
+        values(?, ?, ?, ?, ?)
         `,
         author?.user_id as number,
         id,
@@ -278,9 +315,10 @@ app.route('/posts/:id/')
         detail: "pushed new top level reply"
       });
     } catch (e) {
+      console.error(e);
       res.status(400).json({
         msg: "error",
-        detail: `${e}`
+        detail: `push reply failed`
       })
     }
   });
@@ -305,14 +343,15 @@ app.route('/posts/:id/:parent_id')
         r.score = 0;
 
         await db.run(`
-          insert into reply ( author_id
-                            , post_id
-                            , root_reply_id
-                            , body
-                            , score
-                            , created_at
-                            )
-                  values(?, ?, ?, ?, ?, ?)
+          insert into reply
+          ( author_id
+          , post_id
+          , root_reply_id
+          , body
+          , score
+          , created_at
+          )
+          values(?, ?, ?, ?, ?, ?)
           `,
           author?.user_id as number,
           id,
@@ -326,9 +365,10 @@ app.route('/posts/:id/:parent_id')
           detail: "pushed new nested reply"
         });
       } catch (e) {
+        console.error(e);
         res.status(400).json({
           msg: "error",
-          detail: `${e}`
+          detail: `push reply failed`
         })
       }
     }
@@ -343,7 +383,11 @@ app.route('/users')
     const db = await connection;
     const u = (req.body as User);
     console.log(JSON.stringify(u));
-    const u1 = await db.get<User>("select name, password from user where user_id = ?", u.user_id);
+    const u1 = await db.get<User>(`
+      select name, password
+      from user
+      where user_id = ?`,
+      u.user_id);
 
     if (u1 && u1.password == u.password) {
     }

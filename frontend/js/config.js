@@ -78,6 +78,9 @@ $(document).ready(() => {
   $(".profile-links").prepend(`
     <a href="./submit.html">create</a>
   `);
+  $(".profile-links").append(`
+    <img id="avatar-topbar" src=${USER.avatar} width="30"/>
+  `);
 
   $("#login-profile").text(user.name);
   $("#login-profile").attr("href", `./user.html?u=${user.name}`);

@@ -15,7 +15,7 @@ function createUser() {
   const email = $("#email").val();
   const avatar = document.getElementById("avatar-select").files[0];
 
-  const user = { username, password, email };
+  const user = {username, password, email};
   console.log(user);
 
   if (!validateUser(user)) {
@@ -27,16 +27,25 @@ function createUser() {
     fetch(`${SERVER_URL}/signup`, {
       method: "POST",
       mode: "cors",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({name: username, password, email}),
+      headers: {"Content-Type": "application/json"},
+      body: JSON.stringify({
+        name: username,
+        password,
+        email,
+        avatar: avatar64
+      }),
     }).then(res => res.json())
       .then(data => {
         if (data.msg && data.msg === "error") {
           $("#error").text(data.detail);
           return;
         }
-        console.log(data);
-        localStorage.setItem('reddity.user', JSON.stringify({name: username, password}));
+        localStorage.setItem('reddity.user', JSON.stringify({
+          name: username,
+          password,
+          email,
+          avatar: avatar64
+        }));
         window.location.href = "./index.html";
       });
   });

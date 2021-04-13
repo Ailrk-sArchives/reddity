@@ -255,3 +255,8 @@ footer {
   text-align: center;
   margin-top: 20px;
 }
+
+#avatar-topbar {
+  margin-left = 5px;
+  margin-right: 50px;
+}

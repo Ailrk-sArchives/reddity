@@ -8,6 +8,7 @@ function makeEmptyPost(name) {
 
 function renderUserPosts(posts, author) {
   console.log(posts);
+  console.log(USER.avatar);
   $("#postlist").empty();
 
   if (!posts) {
@@ -45,7 +46,8 @@ $(document).ready(() => {
   const url = new URL(window.location.href);
   const u = url.searchParams.get("u");
   $(".sidebar").append(`<h3>${u}</h3>`);
-  $(".sidebar").append(`<p id="score"></p`);
+  $(".sidebar").append(`<p id="score"></p>`);
+  $(".sidebar").append(`<img src="${USER.avatar}" width="80%"></img>`);
 
   loadPosts("new", (posts) => renderUserPosts(posts, u));
   document.title = `${u} - Reddity`;

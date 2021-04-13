@@ -8,17 +8,26 @@ export const requestTimeMW: RequestHandler = (req, _, next) => {
 };
 
 ///! print the current resquest info
-export const loggerMW: RequestHandler = (req, _, next) => {
-  console.log(`[Server]: incoming request ===== ${req.url} ==>>>`);
-  console.log(`[Server]: method: ${req.method}`)
-  console.log(`[Server]: ip: ${req.ip}`)
+export const loggerMW: RequestHandler = (req, res, next) => {
+  try {
+    console.log(`[Server]: incoming request ===== ${req.url} ==>>>`);
+    console.log(`[Server]: method: ${req.method}`)
+    console.log(`[Server]: ip: ${req.ip}`)
 
-  if (isTimedRequest(req)) {
-    console.log(`[Server]: request time: ${req.requestTime}`)
+
+    if (isTimedRequest(req)) {
+      console.log(`[Server]: request time: ${req.requestTime}`)
+    }
+    next();
+  } catch (e) {
+    console.log("[Server Error] no time log");
+
+    console.log(`[Server]: ====================================<<<`);
+    res.status(200).json({
+      msg: "ok",
+      detail: "failed to log time"
+    });
   }
-
-  console.log(`[Server]: ====================================<<<`);
-  next();
 };
 
 
