@@ -33,13 +33,25 @@
         <div class="content-container">
           <div class="content">
             <div class="form" id="login-form">
-              <h3>Login</h3>
-              <p id="error"></p>
-              <div class="items">
-                <div>Username <input type="text" id="username"></div>
-                <div>Password <input type="password" id="password"></div>
+              <div class="input">
+                <h3>Login</h3>
+                <p id="error"></p>
               </div>
-              <button id="submit-button">Submit</button>
+              <div class="items">
+                <div class="input">
+                  <p class="input-title">Username</p>
+                  <input type="text" id="username" class="input-content">
+                </div>
+                <div class="input">
+                  <p class="input-title">Password</p>
+                  <input type="password" id="password" class="input-content">
+                </div>
+                <div class="input">
+                  <div class="button-center">
+                    <button id="submit-button" class="submit">Submit</button>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>

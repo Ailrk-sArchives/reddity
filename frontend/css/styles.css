@@ -223,3 +223,35 @@ footer {
   font-size: 0.8em;
   color: #787e7c;
 }
+
+.input {
+  margin:auto;
+  width:40%;
+}
+
+.input-title {
+  margin-bottom: 0;
+}
+
+.input-content {
+  width: 93%;
+  height: 25px;
+  padding: 5px 11px;
+}
+
+.input-avatar {
+  width: 100%;
+  height: 25px;
+  text-align: center;
+}
+
+.submit {
+  width: 100%;
+  height: 25px;
+}
+
+.button-center {
+  align-self: center;
+  text-align: center;
+  margin-top: 20px;
+}

@@ -33,15 +33,33 @@
         <div class="content-container">
           <div class="content">
             <div class="form" id="signup-form">
-              <h3>New User</h3>
-              <p id="error"></p>
-              <div class="items">
-                <div>Avatar <input type="file" id="avatar-select"></div>
-                <div>Email <input type="email" id="email"></div>
-                <div>Username <input type="text" id="username"></div>
-                <div>Password <input type="password" id="password"></div>
+              <div class="input">
+                <h3>Signup</h3>
+                <p id="error"></p>
               </div>
-              <button id="submit-button">Submit</button>
+              <div class="items">
+                <div class="input">
+                  <p class="input-title">Email</p>
+                  <input type="email" id="email" class="input-content">
+                </div>
+                <div class="input">
+                  <p class="input-title">Username</p>
+                  <input type="text" id="username" class="input-content">
+                </div>
+                <div class="input">
+                  <p class="input-title">Password</p>
+                  <input type="password" id="password" class="input-content">
+                </div>
+                <div class="input">
+                  <p class="input-title">Avatar</p>
+                  <input type="file" id="avatar-select" class="input-avatar">
+                </div>
+                <div class="input">
+                  <div class="button-center">
+                    <button id="submit-button" class="submit">Submit</button>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
