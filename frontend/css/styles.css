@@ -269,3 +269,8 @@ footer {
 .post-history-entry:hover {
   color: SkyBlue;
 }
+
+.profile-links {
+  display: flex;
+  align-items: center;
+}

@@ -78,7 +78,10 @@ function makePostHeader(post) {
       <div class="content-box">
         <p>${post.content}</p>
       </div>
-      <p class="byline">by ${post.author} at ${post.created_at}</p>
+      <p class="byline">by
+        <a href="./user.html?u=${post.author}">${post.author}</a>
+        at ${post.created_at}
+      </p>
     </div>
   `);
 }
@@ -87,7 +90,7 @@ function makeReply(reply) {
   const result = $(`
     <div class="reply reply-content" id="reply_${reply.reply_id}">
       <span class="byline">by
-       <a href="./user.html?u=${reply.author}&a=${reply.avatar}">${reply.author}</a>
+       <a href="./user.html?u=${reply.author}">${reply.author}</a>
        at ${reply.created_at}</span>
       <p class="reply-body">${reply.body}</p>
     </div>
