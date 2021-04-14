@@ -45,15 +45,22 @@ function makeUserEditForm() {
 $(document).ready(() => {
   const url = new URL(window.location.href);
   const u = url.searchParams.get("u");
-  const a = url.searchParams.get("a");
-  $(".sidebar").append(`<h3>${u}</h3>`);
-  $(".sidebar").append(`<p id="score"></p>`);
-  $(".sidebar").append(`<img src="${a ?? USER.avatar}" width="200"></img>`);
 
-  loadPosts("new", (posts) => renderUserPosts(posts, u));
-  document.title = `${u} - Reddity`;
+  fetch(`${SERVER_URL}/avatar/name/${u}`)
+    .then(res => res.json())
+    .then(avatar => {
+      const a = avatar.avatar;
+      $(".sidebar").append(`<h3>${u}</h3>`);
+      $(".sidebar").append(`<p id="score"></p>`);
+      $(".sidebar").append(`<img src="${a ?? USER.avatar}" width="200"></img>`);
 
-  if (USER && USER.name === u) {
-    $(".sidebar").append(makeUserEditForm());
-  }
+      loadPosts("new", (posts) => renderUserPosts(posts, u));
+      document.title = `${u} - Reddity`;
+
+      if (USER && USER.name === u) {
+        $(".sidebar").append(makeUserEditForm());
+      }
+    }).catch(e => {
+      console.error(e);
+    });
 });
