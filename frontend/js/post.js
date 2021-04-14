@@ -87,7 +87,7 @@ function makeReply(reply) {
   const result = $(`
     <div class="reply reply-content" id="reply_${reply.reply_id}">
       <span class="byline">by
-       <a href="./user.html?u=${reply.author}&a=${reply.avatar}">${reply.author}</a>
+       <a href="./user.html?u=${reply.author}">${reply.author}</a>
        at ${reply.created_at}</span>
       <p class="reply-body">${reply.body}</p>
     </div>
