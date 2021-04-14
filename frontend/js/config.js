@@ -42,7 +42,7 @@ function makePost(post) {
 
   const info = $(`
     <div class="info">
-      <span class="post-title"><a href="./post.html?p=${post.post_id}a=${post.avatar}">${post.title}</span>
+      <span class="post-title"><a href="./post.html?p=${post.post_id}">${post.title}</span>
       <span>by
        <a class="post-author" href="./user.html?u=${post.author}">${post.author}</a>
       </span>

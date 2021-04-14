@@ -78,7 +78,10 @@ function makePostHeader(post) {
       <div class="content-box">
         <p>${post.content}</p>
       </div>
-      <p class="byline">by ${post.author} at ${post.created_at}</p>
+      <p class="byline">by
+        <a href="./user.html?u=${post.author}">${post.author}</a>
+        at ${post.created_at}
+      </p>
     </div>
   `);
 }
