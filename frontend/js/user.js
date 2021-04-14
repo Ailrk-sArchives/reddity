@@ -45,9 +45,10 @@ function makeUserEditForm() {
 $(document).ready(() => {
   const url = new URL(window.location.href);
   const u = url.searchParams.get("u");
+  const a = url.searchParams.get("a");
   $(".sidebar").append(`<h3>${u}</h3>`);
   $(".sidebar").append(`<p id="score"></p>`);
-  $(".sidebar").append(`<img src="${USER.avatar}" width="200"></img>`);
+  $(".sidebar").append(`<img src="${a ?? USER.avatar}" width="200"></img>`);
 
   loadPosts("new", (posts) => renderUserPosts(posts, u));
   document.title = `${u} - Reddity`;

@@ -13,8 +13,8 @@ function updateScore(postId, score, renderPosts) {
   fetch(`${SERVER_URL}/posts/${postId}/score`, {
     method: "PUT",
     mode: "cors",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ score: score })
+    headers: {"Content-Type": "application/json"},
+    body: JSON.stringify({score: score})
   }).then(res => res.json()).then(data => {
     console.log(data);
     const url = new URL(window.location.href);
@@ -25,7 +25,7 @@ function updateScore(postId, score, renderPosts) {
     if (!votes) votes = {};
     if (score < 0) {
       votes[postId] = false;
-    } else if (score > 0){
+    } else if (score > 0) {
       votes[postId] = true;
     }
     localStorage.setItem(`reddity.votes.${USER.name}`, JSON.stringify(votes));
@@ -42,7 +42,7 @@ function makePost(post) {
 
   const info = $(`
     <div class="info">
-      <span class="post-title"><a href="./post.html?p=${post.post_id}">${post.title}</span>
+      <span class="post-title"><a href="./post.html?p=${post.post_id}a=${post.avatar}">${post.title}</span>
       <span>by
        <a class="post-author" href="./user.html?u=${post.author}">${post.author}</a>
       </span>

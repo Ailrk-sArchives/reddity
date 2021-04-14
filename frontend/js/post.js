@@ -8,14 +8,14 @@ function loadPost(id) {
 }
 
 function submitReply(body, author, postId, parentId) {
-  const reply = { body, author }
+  const reply = {body, author}
 
   const uri = parentId ? "/" + parentId : "";
   console.log(uri);
   fetch(`${SERVER_URL}/posts/${postId}${uri}`, {
     method: 'PUT',
     mode: 'cors',
-    headers: { 'Content-Type': 'application/json' },
+    headers: {'Content-Type': 'application/json'},
     body: JSON.stringify(reply)
 
   }).then(res => res.json())
@@ -59,7 +59,7 @@ function renderPost(post) {
     }
 
     history = history.filter(p => p.post_id !== post.post_id);
-    history.unshift({ post_id: post.post_id, title: post.title });
+    history.unshift({post_id: post.post_id, title: post.title});
     if (history.length > 3) {
       history.pop();
     }
@@ -87,7 +87,7 @@ function makeReply(reply) {
   const result = $(`
     <div class="reply reply-content" id="reply_${reply.reply_id}">
       <span class="byline">by
-       <a href="./user.html?u=${reply.author}">${reply.author}</a>
+       <a href="./user.html?u=${reply.author}&a=${reply.avatar}">${reply.author}</a>
        at ${reply.created_at}</span>
       <p class="reply-body">${reply.body}</p>
     </div>

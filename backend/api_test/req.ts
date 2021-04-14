@@ -119,4 +119,16 @@ fetch({
   const result = buf.toString('utf8');
   console.log(result);
   // assert(result === "TESTING", "assert failed");
-})
+});
+
+
+fetch({path: "/avatar/name/Jimmy", method: "GET"}, buf => {
+  const result = buf.toString('utf8');
+  console.log(result);
+});
+
+fetch({path: "/avatar/id/5", method: "GET"}, buf => {
+  const result = buf.toString('utf8');
+  console.log(result);
+});
+

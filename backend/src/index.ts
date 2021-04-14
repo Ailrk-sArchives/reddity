@@ -370,6 +370,61 @@ app.route('/posts/:id/:parent_id')
   });
 
 
+///! get avatar
+app.route('/avatar/name/:name')
+  .get(async (req, res) => {
+    const {name} = (req.params as {name: string});
+    try {
+
+      const db = await connection;
+      const a = (await db.get<UserDB>(`
+      select *
+      from user
+      where name = ?`,
+        name))?.avatar;
+
+      res.status(200).json({
+        avatar: a?.toString()
+      });
+
+    } catch (e) {
+      console.error(e);
+      res.status(400).json({
+        msg: "error",
+        detail: `can't fetch avatar`
+      })
+
+    }
+  });
+
+app.route('/avatar/id/:id')
+  .get(async (req, res) => {
+    const {id} = (req.params as {id: string});
+    try {
+
+      const db = await connection;
+      const a = (await db.get<UserDB>(`
+      select *
+      from user
+      where user_id = ?`,
+        id))?.avatar;
+
+      res.status(200).json({
+        avatar: a?.toString()
+      });
+
+    } catch (e) {
+      console.error(e);
+      res.status(400).json({
+        msg: "error",
+        detail: `can't fetch avatar`
+      })
+
+    }
+  });
+
+
+
 ///! req.body: User
 app.route('/users')
   .post(async (req, res) => {
