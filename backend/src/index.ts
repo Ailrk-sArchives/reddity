@@ -4,8 +4,8 @@ import {loggerMW, requestTimeMW} from "./middlewares";
 import {connection, User, Post, Reply, PostDB, UserDB, toPost} from "./model";
 
 const cors = require("cors");
-const app = express()
-const PORT = 8080
+const app = express();
+const PORT = process.env.PORT || 8080;
 
 
 app.use(cors());
